@@ -9,7 +9,7 @@ from datetime import datetime
 date = datetime.today().strftime('%Y-%m-%d-%H-%M-%S')
 log = open("%s.txt" % date, "w")
 
-main_dir = "\\\\depoerp\\\\ErpDosyaDepo\\\\TempEmployee"
+main_dir = "..."
 start_folder = sys.argv[1]  # start folder number
 end_folder = sys.argv[2]  # end folder number
 last_folder = ""
