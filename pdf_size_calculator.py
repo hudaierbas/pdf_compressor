@@ -1,7 +1,7 @@
 from __future__ import print_function
 import os
 
-main_dir = "//depoerp/ErpDosyaDepo/TempEmployee"
+main_dir = "..."
 file_size_kb = 0
 
 for root, dirs, files in os.walk(main_dir):
