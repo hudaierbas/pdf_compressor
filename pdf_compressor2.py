@@ -16,6 +16,10 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-cl", "--compressed_list",
                     required=False, type=str, help="sıkıştırılma işlemi yapılmış dosya isimlerinin bulunduğu txt dosyası")
 
+# create compressed files list log
+parser.add_argument("-lc", "--log_compressed_list",
+                    required=False, type=str, default="false", help="sıkıştırılma işlemi yapılmış dosya isimlerinin bulunduğu txt dosyasını oluşturur")
+
 # day difference dd format
 parser.add_argument("-d", "--day",
                     required=False, type=int, help="sıkıştırılma işlemi yapılmayacak son gün sayısı")
@@ -47,7 +51,8 @@ def handler(signum, frame):  # handle terminate
 
 signal.signal(signal.SIGINT, handler)  # crtl + c  ==> call handler
 
-compressd_file_logs = open("compressed_file_list_%s.txt" % date, "w")
+if args.log_compressed_list == "true":
+    compressd_file_logs = open("compressed_file_list_%s.txt" % date, "w")
 
 
 def compressed_file_list(compressed_file):
@@ -136,7 +141,8 @@ for root, dirs, files in os.walk(main_dir):
             os.remove(filename)
             os.rename(compressed_file_path, filename)
 
-            compressed_file_list(file)
+            if args.log_compressed_list == "true":
+                compressed_file_list(file)
 
             print("işlem süresi:  %s saniye " %
                   ("{:.2f}".format(time.time() - start_time)))
