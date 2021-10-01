@@ -34,8 +34,7 @@ if args.compressed_list != None:
 
 date = datetime.today().strftime('%Y-%m-%d-%H-%M-%S')
 
-#main_dir = "\\\\depoerp\\\\ErpDosyaDepo\\\\TempEmployee"
-main_dir = "C:/Users/herbas/Desktop/pdf"
+main_dir = "..."
 
 t_start_time = time.time()
 file_size_kb = 0
