@@ -10,7 +10,6 @@ from datetime import datetime
 
 date = datetime.today().strftime('%Y-%m-%d-%H-%M-%S')
 
-#main_dir = "..."
 main_dir = "..."
 
 hasArgv = False
