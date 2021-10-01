@@ -1,3 +1,5 @@
+# download Ghostscript https://www.ghostscript.com/download.html
+# change the gswin64c.exe path at subproccess.popen
 # python pdf_compressor.py                           / all folders
 # python pdf_compressor.py start_folder end_folder   / folders in range
 from __future__ import print_function
@@ -142,6 +144,3 @@ print("Sıkıştırılmış toplam boyut: %s mb" % compressed_file_size_mb)
 print("Sıkıştırma oranı: %s" % compress_perc)
 
 create_log(2)
-
-
-# '-dEmbedAllFonts=true', '-dSubsetFonts=true', ' -dColorImageDownsampleType=/Bicubic', '-dColorImageResolution=144', '-dGrayImageDownsampleType=/Bicubic', '-dGrayImageResolution=144', '-dMonoImageDownsampleType=/Bicubic', '-dMonoImageResolution=144',
