@@ -1,5 +1,6 @@
 # download Ghostscript https://www.ghostscript.com/download.html
-# change the gswin64c.exe path at subproccess.popen
+# change gswin64c.exe path // gswin_path
+# change pdf directory // main_dir
 
 from __future__ import print_function
 import os
@@ -10,6 +11,13 @@ import signal
 from datetime import datetime
 import argparse
 
+gswin_path = 'C:/Program Files/gs/gs9.55.0/bin/gswin64c.exe'
+#main_dir = "C:/Users/herbas/Desktop/yeniklasor"
+#main_dir = r'\\depo\dizayn\B1098-Longliner&Seine_67.00m\Supplier'
+main_dir = r"C:\Users\herbas\Desktop\hudai\python\pdf_compressor\test-data"
+#main_dir = "\\\\depoerp\\\\ErpDosyaDepo\\\\TempEmployee"
+# \\depo\dizayn\B1098-Longliner&Seine_67.00m\Supplier\test
+
 parser = argparse.ArgumentParser()
 
 # compressed_file_list path
@@ -18,7 +26,7 @@ parser.add_argument("-cl", "--compressed_list",
 
 # create compressed files list log
 parser.add_argument("-lc", "--log_compressed_list",
-                    required=False, type=str, default="false", help="sıkıştırılma işlemi yapılmış dosya isimlerinin bulunduğu txt dosyasını oluşturur")
+                    required=False, type=str, default="true", help="sıkıştırılma işlemi yapılmış dosya isimlerinin bulunduğu txt dosyasını oluşturur")
 
 # day difference dd format
 parser.add_argument("-d", "--day",
@@ -34,7 +42,6 @@ if args.compressed_list != None:
 
 date = datetime.today().strftime('%Y-%m-%d-%H-%M-%S')
 
-main_dir = "..."
 
 t_start_time = time.time()
 file_size_kb = 0
@@ -126,22 +133,27 @@ for root, dirs, files in os.walk(main_dir):
             start_time = time.time()
 
             arg1 = '-sOutputFile=' + "compressed_" + file
-            p = subprocess.Popen(['C:/Program Files/gs/gs9.55.0/bin/gswin64c.exe', '-sDEVICE=pdfwrite', '-dCompatibilityLevel=1.4',
-                                 '-dPDFSETTINGS=/ebook',  '-dNOPAUSE', '-dBATCH', '-dQUIET', str(arg1), filename], cwd=root, stdout=subprocess.PIPE)
 
-            if p.communicate()[1] != None:
-                errorList.append([folder, file, p.communicate()[1]])
+            try:
+                p = subprocess.Popen([gswin_path, '-sDEVICE=pdfwrite', '-dCompatibilityLevel=1.4',
+                                      '-dPDFSETTINGS=/ebook',  '-dNOPAUSE', '-dBATCH', '-dQUIET', str(arg1), filename], cwd=root, stdout=subprocess.PIPE)
 
-            count += 1
-            compressed_file_path = os.path.join(root, "compressed_" + file)
-            compressed_file_size_kb += os.path.getsize(compressed_file_path)
-            file_size_kb += os.path.getsize(filename)
+                p.communicate()
 
-            os.remove(filename)
-            os.rename(compressed_file_path, filename)
+                count += 1
+                compressed_file_path = os.path.join(root, "compressed_" + file)
+                compressed_file_size_kb += os.path.getsize(
+                    compressed_file_path)
+                file_size_kb += os.path.getsize(filename)
 
-            if args.log_compressed_list == "true":
-                compressed_file_list(file)
+                os.remove(filename)
+                os.rename(compressed_file_path, filename)
+
+                if args.log_compressed_list == "true":
+                    compressed_file_list(filename)
+            except:
+                errorList.append([folder, file, sys.exc_info()[0]])
+                print("Error Occured")
 
             print("işlem süresi:  %s saniye " %
                   ("{:.2f}".format(time.time() - start_time)))
@@ -154,8 +166,11 @@ file_size_mb = "{:.2f}".format(file_size_kb / (1024*1024))
 compressed_file_size_mb = "{:.2f}".format(
     compressed_file_size_kb / (1024*1024))
 
-compress_perc = "{:.2f}".format(
-    ((file_size_kb - compressed_file_size_kb) / file_size_kb) * 100)
+try:
+    compress_perc = "{:.2f}".format(
+        ((file_size_kb - compressed_file_size_kb) / file_size_kb) * 100)
+except:
+    compress_perc = "-"
 
 print("Sıkıştırılan dosya: %s adet" % count)
 print("Toplam boyut: %s mb" % file_size_mb)
