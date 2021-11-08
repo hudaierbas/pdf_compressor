@@ -12,11 +12,7 @@ from datetime import datetime
 import argparse
 
 gswin_path = 'C:/Program Files/gs/gs9.55.0/bin/gswin64c.exe'
-#main_dir = "C:/Users/herbas/Desktop/yeniklasor"
-#main_dir = r'\\depo\dizayn\B1098-Longliner&Seine_67.00m\Supplier'
-main_dir = r"C:\Users\herbas\Desktop\hudai\python\pdf_compressor\test-data"
-#main_dir = "\\\\depoerp\\\\ErpDosyaDepo\\\\TempEmployee"
-# \\depo\dizayn\B1098-Longliner&Seine_67.00m\Supplier\test
+main_dir = r"C:\Users\user\Desktop\x\python\pdf_compressor\test-data"
 
 parser = argparse.ArgumentParser()
 
